@@ -1,0 +1,84 @@
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+
+import { ShopProvider } from './context/ShopContext';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+
+import Home from './pages/Home';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
+import AdminDashboard from './pages/AdminDashboard';
+import SemanticSearch from './pages/SemanticSearch';
+import ShopMateChatbot from './components/ShopMateChatbot';
+import Logout from './pages/Logout';
+import Registerpage from './pages/Registerpage';
+import Loginpage from './pages/LoginPage';
+
+
+// Wraps layout so we can use useLocation inside Router
+function AppLayout() {
+    const location = useLocation();
+    const hideNav = location.pathname === '/login' || location.pathname === '/register' 
+
+    return (
+        <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
+            {!hideNav && <Navbar />}
+
+            <Routes>
+                {/* Public routes */}
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/login" element={<Loginpage />} />
+                <Route path="/register" element={<Registerpage />} />
+                <Route path="/logout" element={<Logout />} />
+
+                {/* Protected: any logged-in user (admin or user) */}
+                <Route path="/home" element={
+                    <ProtectedRoute>
+                        <Home />
+                    </ProtectedRoute>
+                } />
+                <Route path="/product/:id" element={
+                    <ProtectedRoute>
+                        <ProductDetails />
+                    </ProtectedRoute>
+                } />
+                <Route path="/cart" element={
+                    <ProtectedRoute>
+                        <Cart />
+                    </ProtectedRoute>
+                } />
+                <Route path="/semantic-search" element={
+                    <ProtectedRoute>
+                        <SemanticSearch />
+                    </ProtectedRoute>
+                } />
+
+               
+
+                {/* Protected: admin only */}
+                <Route path="/admin" element={
+                    <ProtectedRoute role="admin">
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                } />
+              
+            </Routes>
+
+            {!hideNav && <ShopMateChatbot />}
+        </div>
+    );
+}
+
+function App() {
+    return (
+        <ShopProvider>
+            <Router>
+                <AppLayout />
+            </Router>
+        </ShopProvider>
+    );
+}
+
+export default App;
