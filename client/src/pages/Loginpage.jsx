@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
+import api from "../utils/api";
 
 const Loginpage = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const Loginpage = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await axios.post("http://localhost:3001/api/users/login", formData);
+      const response = await api.post("/users/login", formData);
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
       localStorage.setItem("user", JSON.stringify(response.data.user));
