@@ -1,6 +1,7 @@
 import React from 'react';
 import ChatBot from 'react-chatbotify';
 import axios from 'axios';
+import api from '../utils/api';
 
 const ShopMateChatbot = () => {
     // Track conversation history
@@ -19,11 +20,8 @@ const ShopMateChatbot = () => {
             // Add user message to history
             historyRef.current.push({ role: 'user', content: userQuestion });
 
-            const response = await axios.post('http://localhost:3001/api/ai/ask-policy', {
-                question: userQuestion,
-                history: historyRef.current // Send full history
-            }, {
-                timeout: 10000 // 10 second timeout
+            const response = await api.post('/ai/agent', {
+                message: userQuestion,
             });
 
             const botAnswer = response.data.answer;

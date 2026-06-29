@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const aiService = require('../services/aiService');
 const authorizeRoles = require('../middleware/authorization');
-const { runShopAgent } = require('../services/aiService');
+const { runShopAgent } = require('../services/agentServices');
 const authenticate = require('../middleware/authenticate');
 
 // POST /api/ai/ask-policy

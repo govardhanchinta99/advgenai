@@ -1,5 +1,8 @@
+require("dotenv").config();
+// Ensure compatibility: prefer GEMINI_API_KEY but fall back to existing GOOGLE_API_KEY
+process.env.GOOGLE_API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
 const {createAgent} = require('langchain');
-const { checkOrderStatusTool } = require('../tools/shopTools');
+const { checkOrderStatusTool, searchProductsTool,getRefundPolicyTool } = require('../tools/shopTools');
 
 const agent = createAgent(
     {
