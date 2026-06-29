@@ -15,12 +15,13 @@ import ShopMateChatbot from './components/ShopMateChatbot';
 import Logout from './pages/Logout';
 import Registerpage from './pages/Registerpage';
 import Loginpage from './pages/LoginPage';
+import ForgotPassword from './pages/ForgotPassword';
 
 
 // Wraps layout so we can use useLocation inside Router
 function AppLayout() {
     const location = useLocation();
-    const hideNav = location.pathname === '/login' || location.pathname === '/register' 
+    const hideNav = location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/forgot-password';
 
     return (
         <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
@@ -31,6 +32,7 @@ function AppLayout() {
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<Loginpage />} />
                 <Route path="/register" element={<Registerpage />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/logout" element={<Logout />} />
 
                 {/* Protected: any logged-in user (admin or user) */}

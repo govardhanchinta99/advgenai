@@ -84,6 +84,12 @@ const Loginpage = () => {
             />
           </div>
 
+          <div style={styles.forgotPassword}>
+            <Link to="/forgot-password" style={styles.forgotLink}>
+              Forgot password?
+            </Link>
+          </div>
+
           <button type="submit" disabled={loading} style={styles.button}>
             {loading ? "Signing in..." : "Sign In"}
           </button>
