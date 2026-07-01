@@ -27,9 +27,11 @@ const ForgotPassword = () => {
             setInfo(response.data.message || "OTP sent to your email address.");
             setStep(2);
         } catch (err) {
-            setError(err.response?.data?.message || "An error occurred. Please try again.");
+            setError(err.response?.data?.message || "Failed to send otp. Please try again.");
         } finally {
             setLoading(false);
         }
-    }
+    };
 }
+
+export default ForgotPassword;
