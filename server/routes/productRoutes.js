@@ -17,11 +17,11 @@ const authorizeRoles = require("../middleware/authorization");
 router.get('/search/semantic', semanticSearch);
 
 router.route('/')
-    .get(authenticate, authorizeRoles('admin', 'user'), getProducts)
+    .get(getProducts)
     .post(authenticate, authorizeRoles('admin'), createProduct);
 
 router.route('/:id')
-    .get(authenticate, authorizeRoles('admin', 'user'), getProductById)
+    .get(getProductById)
     .put(authenticate, authorizeRoles('admin'), updateProduct)
     .delete(authenticate, authorizeRoles('admin'), deleteProduct);
 

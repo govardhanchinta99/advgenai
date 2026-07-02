@@ -1,13 +1,13 @@
 const { tool } =require('@langchain/core/tools');
- const { z } = require('zod');
- const { Pinecone } = require('@pinecone-database/pinecone');
- const { generateEmbedding } = require('../services/aiService');
- const { getDB} = require('../config/db');
+const { z } = require('zod');
+const { Pinecone } = require('@pinecone-database/pinecone');
+const { generateEmbedding } = require('../services/aiService');
+const { getDB} = require('../config/db');
 
- const pinecone = new Pinecone({apiKey: process.env.PINECONE_API_KEY});
- const index = pinecone.Index(process.env.PINECONE_INDEX);
+const pinecone = new Pinecone({apiKey: process.env.PINECONE_API_KEY});
+const index = pinecone.Index(process.env.PINECONE_INDEX);
 
- async function searchProductsFunction({query}) {
+async function searchProductsFunction({query}) {
     try {
         const vector = await generateEmbedding(query);
         const response = await index.query({
@@ -19,7 +19,7 @@ const { tool } =require('@langchain/core/tools');
         if (matches.length === 0) {
             return `No products found matching that description.`;
         }
-        const results = matches.map(match => {
+        const results = matches.map((match, i) => {
             const meta = match.metadata || {};
             return `${i + 1}. ${meta.name} - ${meta.price}`;
         }).join('\n');
@@ -27,8 +27,8 @@ const { tool } =require('@langchain/core/tools');
     } catch (error) {
         return `Error searching for products: ${error.message}`;
     }
- }
- const searchProductsTool = tool(searchProductsFunction, {
+}
+const searchProductsTool = tool(searchProductsFunction, {
     name: 'search_product',
     description:
     'Search the ShopMATE product catalog using a natural language description. ' +
@@ -42,8 +42,8 @@ const { tool } =require('@langchain/core/tools');
              ' for example "wireless headphones" or "running shoes".'
         ),
     }),
- }); 
- async function checkOrderStatusFunction({orderId}) {
+}); 
+async function checkOrderStatusFunction({orderId}) {
     try{
         const db = getDB();
         const order = await db.collection('orders').findOne({ _id: new require('mongodb').ObjectId(orderId) });
