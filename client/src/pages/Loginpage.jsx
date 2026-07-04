@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import api from "../utils/api";
 
-const Loginpage = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -216,4 +216,4 @@ const styles = {
   },
 };
 
-export default Loginpage;
+export default LoginPage;

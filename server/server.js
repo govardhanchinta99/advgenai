@@ -7,6 +7,7 @@ const { connectDB } = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const aiRoutes = require('./routes/aiRoutes');
 const userRoutes = require('./routes/userRoutes');
+const blogRoutes = require('./routes/blogRoutes');
 
 
 
@@ -25,6 +26,7 @@ app.use(cors());
 app.use('/api/products', productRoutes);
 app.use('/api/ai', aiRoutes);
 app.use("/api/users",userRoutes);
+app.use("/api/blogs",blogRoutes);
 
 app.get('/', (req, res) => {
     res.send('ShopMATE API is running...');

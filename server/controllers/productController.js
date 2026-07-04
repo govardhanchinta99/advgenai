@@ -91,19 +91,22 @@ const createProduct = async (req, res) => {
 
         const result = await getCollection().insertOne(newProduct);
 
-        // Fetch the created document to return it
-        const createdProduct = await getCollection().findOne({ _id: result.insertedId });
+    // Fetch the created document to return it
+    const createdProduct = await getCollection().findOne({ _id: result.insertedId });
 
-        /*
-         * We need to create an embedding and upload it to pinecone whenever a new product is added
-         */
+    /*
+        * We need to create an embedding and upload it to pinecone whenever a new product is added.
+        * This is a best-effort sync step: if it fails, we don't want an orphaned/half-created
+        * product left in Mongo with no way for the client to know it succeeded, so we roll back
+        * the insert and surface a clear error instead.
+        */
+    try {
         // Step 1: Create embed for this product
         const embedding = await generateEmbedding('Product Name: ' + createdProduct.name + ', Product Description: ' + createdProduct.description);
 
         console.log("Created embedding for product: " + createdProduct.name);
 
         // Step 2: Upload to pinecone
-        // Push this vector to an array
         const vector = {
             id: createdProduct._id.toString(),
             values: embedding,
@@ -117,6 +120,14 @@ const createProduct = async (req, res) => {
 
         await index.upsert([vector]);
         console.log("Successfully uploaded embedding of product: " + createdProduct.name + " to pinecone");
+        } catch (syncError) {
+            console.error("Failed to sync new product to Pinecone, rolling back Mongo insert:", syncError);
+            await getCollection().deleteOne({ _id: result.insertedId });
+            return res.status(502).json({
+                message: 'Product could not be indexed for search and was not saved. Please try again.',
+                error: syncError.message
+            });
+        }
 
         res.status(201).json(createdProduct);
     } catch (error) {

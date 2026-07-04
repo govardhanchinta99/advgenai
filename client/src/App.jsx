@@ -14,7 +14,7 @@ import SemanticSearch from './pages/SemanticSearch';
 import ShopMateChatbot from './components/ShopMateChatbot';
 import Logout from './pages/Logout';
 import Registerpage from './pages/Registerpage';
-import Loginpage from './pages/LoginPage';
+import LoginPage from './pages/LoginPage';
 import ForgotPassword from './pages/ForgotPassword';
 
 
@@ -30,7 +30,7 @@ function AppLayout() {
             <Routes>
                 {/* Public routes */}
                 <Route path="/" element={<Navigate to="/login" />} />
-                <Route path="/login" element={<Loginpage />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<Registerpage />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/logout" element={<Logout />} />
