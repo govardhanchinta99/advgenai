@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Wand2, Eye } from 'lucide-react';
-
-const getAuthHeaders = () => ({
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-});
-
-const API = 'http://localhost:3001/api/blogs';
+import api from '../utils/api';
 
 const BlogAdmin = () => {
     const [topic, setTopic] = useState('');
@@ -18,9 +12,10 @@ const BlogAdmin = () => {
 
     const fetchBlogs = async () => {
         try {
+            // fetchBlogs
             const [r1, r2] = await Promise.all([
-                axios.get(`${API}?status=in_review`, { headers: getAuthHeaders() }),
-                axios.get(`${API}?status=published`, { headers: getAuthHeaders() }),
+                api.get('/blogs?status=in_review'),
+                api.get('/blogs?status=published'),
             ]);
             setInReview(r1.data);
             setPublished(r2.data);
@@ -39,11 +34,7 @@ const BlogAdmin = () => {
 
         setIsGenerating(true);
         try {
-            const response = await axios.post(
-                `${API}/generate`,
-                { topic },
-                { headers: getAuthHeaders() }
-            );
+            const response = await api.post('/generate', { topic });
             setTopic('');
             navigate(`/admin/blogs/${response.data._id}/review`);
         } catch (error) {
