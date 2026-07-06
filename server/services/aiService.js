@@ -29,11 +29,13 @@ async function generateProductDescription(productName, category) {
         "Under the category: " + category + "\n" +
         "Tone: Professional yet exciting.";
     try {
-        const result = await genAI.models.generateContent(
-            {
-                model: "gemini-2.5-flash",
-                contents: prompt
-            });
+        const model = new ChatGoogleGenerativeAI({
+            model: "gemini-2.5-flash",
+            temperature: 0,
+            maxRetries: 2,
+        });
+
+        const result = await model.invoke(prompt);
         return result.text;
     } catch (error) {
         console.error("Error generating product description:", error);
