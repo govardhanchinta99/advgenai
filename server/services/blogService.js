@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { getDB } = require('../config/db');
-const collections = () => getDB().collection('blogs');
+const collection = () => getDB().collection('blogs');
 
 async function createBlog({ topic, createdBy}) {
     const now = new Date();
@@ -25,7 +25,7 @@ async function createBlog({ topic, createdBy}) {
 }
 
 async function setStatus(blogId, status) {
-    await collections().updateOne(
+    await collection().updateOne(
         { _id: new ObjectId(blogId) },
         { $set: { status, updatedAt: new Date() } }
     );
