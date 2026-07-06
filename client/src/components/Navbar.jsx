@@ -7,11 +7,19 @@ const Navbar = () => {
     const { cart } = useContext(ShopContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         setIsLoggedIn(!!token);
+
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            setIsAdmin(user?.role === 'admin');
+        } catch {
+            setIsAdmin(false);
+        }
     }, []);
 
     const handleSearch = (e) => {
@@ -54,7 +62,7 @@ const Navbar = () => {
 
                     {/* Right Icons */}
                     <div className="flex items-center space-x-6">
-                        {isLoggedIn && (
+                        {isAdmin && (
                             <Link to="/admin" className="text-gray-500 hover:text-black font-medium text-sm">
                                 Admin
                             </Link>
@@ -80,6 +88,11 @@ const Navbar = () => {
                         ) : (
                             <Link to="/login" className="text-gray-500 hover:text-black font-medium text-sm">
                                 Login
+                            </Link>
+                        )}
+                        {isAdmin && (
+                            <Link to="/admin/blogs" className="text-gray-500 hover:text-black font-medium text-sm">
+                                Blog AI
                             </Link>
                         )}
                     </div>

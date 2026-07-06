@@ -16,6 +16,7 @@ import Logout from './pages/Logout';
 import Registerpage from './pages/Registerpage';
 import LoginPage from './pages/LoginPage';
 import ForgotPassword from './pages/ForgotPassword';
+import BlogAdmin from './pages/BlogAdmin';
 
 
 // Wraps layout so we can use useLocation inside Router
@@ -65,7 +66,11 @@ function AppLayout() {
                         <AdminDashboard />
                     </ProtectedRoute>
                 } />
-              
+                <Route path="/admin/blogs" element={
+                    <ProtectedRoute role="admin">
+                        <BlogAdmin />
+                    </ProtectedRoute>
+                } />
             </Routes>
 
             {!hideNav && <ShopMateChatbot />}
