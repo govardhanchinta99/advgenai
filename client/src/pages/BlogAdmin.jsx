@@ -34,7 +34,7 @@ const BlogAdmin = () => {
 
         setIsGenerating(true);
         try {
-            const response = await api.post('/generate', { topic });
+            const response = await api.post('/blogs/generate', { topic });
             setTopic('');
             navigate(`/admin/blogs/${response.data._id}/review`);
         } catch (error) {
