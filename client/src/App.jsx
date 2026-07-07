@@ -17,7 +17,7 @@ import Registerpage from './pages/Registerpage';
 import LoginPage from './pages/LoginPage';
 import ForgotPassword from './pages/ForgotPassword';
 import BlogAdmin from './pages/BlogAdmin';
-
+import BlogReview from './pages/BlogReview';
 
 // Wraps layout so we can use useLocation inside Router
 function AppLayout() {
@@ -69,6 +69,11 @@ function AppLayout() {
                 <Route path="/admin/blogs" element={
                     <ProtectedRoute role="admin">
                         <BlogAdmin />
+                    </ProtectedRoute>
+                } />
+                <Route path="/admin/blogs/:id/review" element={
+                    <ProtectedRoute role="admin">
+                        <BlogReview />
                     </ProtectedRoute>
                 } />
             </Routes>
